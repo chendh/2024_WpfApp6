@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2024_WpfApp6"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="2024WPF選課系統ver1" Height="700" Width="1000">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="500*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500*"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="500*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Background="LightCyan">
+            <Label Content="學生" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="16" FontWeight="Bold" Margin="100, 0, 0, 0"/>
+            <ComboBox x:Name="cmbStudent" Width="250" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30, 0, 0, 0"/>
+        </StackPanel>
+        <TabControl Grid.Row="1">
+            <TabItem Header="以教師分類課程">
+                <TreeView x:Name="tvTeacher" Background="#FFFAF7E7"/>
+            </TabItem>
+            <TabItem Header="所有課程">
+                <ListBox x:Name="lbCourse" Background="#FFFAEBE7"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
