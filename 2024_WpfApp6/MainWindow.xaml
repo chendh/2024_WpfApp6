@@ -51,7 +51,7 @@
                 </TreeView>
             </TabItem>
             <TabItem Header="所有課程">
-                <ListBox x:Name="lbCourse" Background="#FFFAEBE7" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="lbCourse_SelectionChanged">
+                <ListBox x:Name="lbCourse" Background="#FFFAEBE7" SelectionChanged="lbCourse_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical" Margin="0,2,0,2">
