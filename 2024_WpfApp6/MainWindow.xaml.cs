@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using Microsoft.Win32;
+using System.IO;
+using System.Text;
+using System.Text.Json;
+using System.Windows;
 
 namespace _2024_WpfApp6
 {
@@ -32,7 +36,7 @@ namespace _2024_WpfApp6
         private void InitializeData()
         {
             // 新增學生資料
-            students.Add(new Student { StudentId = "S001", StudentName= "陳小明" });
+            students.Add(new Student { StudentId = "S001", StudentName = "陳小明" });
             students.Add(new Student { StudentId = "S002", StudentName = "林小華" });
             students.Add(new Student { StudentId = "S003", StudentName = "張小英" });
             students.Add(new Student { StudentId = "S004", StudentName = "王小強" });
@@ -90,7 +94,73 @@ namespace _2024_WpfApp6
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            if (selectedStudent == null || selectedCourse == null)
+            {
+                MessageBox.Show("請選取學生或課程");
+                return;
+            }
+            else
+            {
+                Record newRecord = new Record
+                {
+                    SelectedStudent = selectedStudent,
+                    SelectedCourse = selectedCourse
+                };
 
+                foreach (Record r in records)
+                {
+                    if (r.Equals(newRecord))
+                    {
+                        MessageBox.Show("此學生已選取此課程");
+                        return;
+                    }
+                }
+                records.Add(newRecord);
+                lvRecord.ItemsSource = records;
+                lvRecord.Items.Refresh();
+            }
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedRecord == null)
+            {
+                MessageBox.Show("請選取紀錄");
+                return;
+            }
+            else
+            {
+                records.Remove(selectedRecord);
+                lvRecord.ItemsSource = records;
+                lvRecord.Items.Refresh();
+            }
+        }
+
+        private void lvRecord_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (lvRecord.SelectedItem is Record)
+            {
+                selectedRecord = lvRecord.SelectedItem as Record;
+                labelStatus.Content = $"選擇紀錄：{selectedRecord.SelectedStudent.StudentName} - {selectedRecord.SelectedCourse.CourseName}";
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Json Files(*.json)|*.json|All Files(*.*)|*.*";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                };
+                string json = JsonSerializer.Serialize(records, options);
+                File.WriteAllText(saveFileDialog.FileName, json);
+                MessageBox.Show("資料已儲存");
+            }
         }
     }
 }
